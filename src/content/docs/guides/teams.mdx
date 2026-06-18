@@ -1,0 +1,66 @@
+---
+title: Teams & Members
+description: Learn how Crystade organizes workspaces, members, roles, and invitations.
+---
+
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Teams
+
+A team is a workspace that owns resources such as cron jobs, health checks, and monitors. Resources stay inside the team where they were created.
+
+Crystade supports two team types:
+
+| Team type | Use it for |
+|-----------|------------|
+| **Personal team** | Solo work, private experiments, and resources that only you manage. |
+| **Collaborative team** | Shared production resources and work that multiple teammates manage together. |
+
+<Aside>
+Every account starts with a personal team. Create a collaborative team when you need shared access or team billing.
+</Aside>
+
+## Roles
+
+Collaborative teams have two main roles:
+
+| Role | What they can do |
+|------|------------------|
+| **Owner** | Manage team settings, invite members, update roles, and remove members. |
+| **Member** | View team membership and work with team resources according to product permissions. |
+
+Owners should be limited to trusted teammates who are responsible for managing access and team settings.
+
+## Invitations
+
+Owners can invite teammates by email. Invited users can accept or decline the invitation before it expires.
+
+Use invitations when you want to:
+
+- Add engineers to manage jobs and monitors
+- Bring an operations teammate into the workspace
+- Give a billing or team lead visibility into team activity
+
+## Billing Admin
+
+Each team has one billing admin. This person manages subscriptions, payment details, invoices, and billing changes for the team.
+
+The billing admin must be an owner. If billing responsibility changes, transfer the billing admin role to another owner before changing that user's access.
+
+## Good Practices
+
+<CardGrid>
+<Card title="Use teams by environment" icon="setting">
+	Separate production and staging resources into different teams if they have different ownership or billing needs.
+</Card>
+<Card title="Keep ownership small" icon="people">
+	Grant owner access only to teammates who need to manage team settings or members.
+</Card>
+<Card title="Review access regularly" icon="magnifier">
+	Remove users who no longer need access to shared cron jobs, checks, or monitors.
+</Card>
+</CardGrid>
+
+## Related
+
+<LinkCard title="Billing & Plans" href="/guides/billing/" description="Learn how team billing and plan management work." />

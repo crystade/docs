@@ -1,0 +1,71 @@
+---
+title: Resources
+description: Learn how Crystade resources are grouped, counted, and affected by plan capacity.
+---
+
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## What Is a Resource?
+
+A resource is something your team manages in Crystade, such as a cron job, health check, or monitor.
+
+Resources belong to a single team. This keeps access, billing, and history clear for everyone using the workspace.
+
+## Team-Scoped Resources
+
+When you create a resource, it is attached to the currently selected team.
+
+This means:
+
+- Team members with access can work with that team's resources
+- Billing capacity applies to resources in that team
+- Resources and history stay organized by workspace
+
+<Aside>
+Create separate teams if different projects need separate access control, billing ownership, or operational visibility.
+</Aside>
+
+## Capacity
+
+Your team's plan and addons determine how many active resources you can run. Capacity is calculated per resource type.
+
+For example:
+
+- A base plan may include a certain number of active cron jobs
+- An addon may increase cron job capacity without changing the base plan
+- Other resource types can have their own limits and addons
+
+## What Happens When Capacity Changes?
+
+If your team downgrades a plan or removes an addon, capacity may become lower than your current usage.
+
+Crystade preserves your resources and history. Resources above the new capacity may be paused until capacity is available again.
+
+Paused resources:
+
+- Keep their configuration
+- Keep their history
+- Do not run while paused
+- Can resume when capacity increases again
+
+<Aside type="tip">
+To free capacity immediately, delete resources you no longer need or increase capacity through your plan or addons.
+</Aside>
+
+## Good Practices
+
+<CardGrid>
+<Card title="Name resources clearly" icon="pencil">
+	Use names that identify the service, environment, and purpose of each cron job or monitor.
+</Card>
+<Card title="Separate environments" icon="setting">
+	Keep production and staging resources separate when they have different owners or billing needs.
+</Card>
+<Card title="Review unused resources" icon="magnifier">
+	Remove resources that are no longer needed to keep capacity and dashboards clean.
+</Card>
+</CardGrid>
+
+## Related
+
+<LinkCard title="Billing & Plans" href="/guides/billing/" description="Learn how plans and addons affect resource capacity." />

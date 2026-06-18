@@ -1,0 +1,76 @@
+---
+title: Billing & Plans
+description: Compare Crystade plans, understand addons, and manage team billing.
+---
+
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Crystade billing is scoped to a team. Each team has its own plan, addons, invoices, and billing admin.
+
+Payments, invoices, taxes, and payment method updates are handled securely by Paddle.
+
+## Plans
+
+| Plan | Price | Best for |
+|------|-------|----------|
+| **Free** | $0 | Solo developers, side projects, and early prototypes |
+| **Starter** | $15/month | Small teams launching production workloads |
+| **Standard** | $49/month | Growing teams with more resources and owners |
+
+<Aside>
+Resource limits vary by resource type. For example, cron job limits are documented with cron jobs rather than in this billing overview.
+</Aside>
+
+## Seats and Owners
+
+| Feature | Free | Starter | Standard |
+|---------|:----:|:-------:|:--------:|
+| Team members | Unlimited | Unlimited | Unlimited |
+| Owners | 1 | 2 | Unlimited |
+
+## Addons
+
+Addons let you increase capacity for a specific resource without changing your base plan. For example, a team may add more cron job capacity while staying on the same plan.
+
+- Available on all plans, including Free
+- Billed monthly
+- Managed by the team's billing admin
+- Scoped to the team that purchased them
+
+## Plan and Addon Changes
+
+| Change | When it takes effect |
+|--------|----------------------|
+| Upgrade plan | After successful payment |
+| Increase addon quantity | After successful payment |
+| Downgrade plan | At the next billing date |
+| Decrease addon quantity | At the next billing date |
+| Cancel paid subscription | At the end of the current paid period |
+
+<Aside type="tip">
+Crystade does not delete resources or execution history when billing changes. If a lower plan or addon quantity reduces capacity, some resources may pause until capacity is available again.
+</Aside>
+
+## Invoices and Payment Methods
+
+The billing admin can open the Paddle customer portal to:
+
+- Update payment methods
+- View invoices and receipts
+- Manage billing details
+- Stop future renewal
+
+## Money-Back Guarantee
+
+Paid plans and addons include a 30-day money-back guarantee from the initial purchase date. Contact Crystade support to request a refund within the guarantee window.
+
+## Credits and Discounts
+
+If your team has credits, the billing admin can use them toward eligible checkout discounts. Credits belong to the team and cannot be moved to another team.
+
+## Related
+
+<CardGrid>
+<LinkCard title="Teams & Members" href="/guides/teams/" description="Understand the billing admin role and team ownership." />
+<LinkCard title="Plan Reference" href="/reference/plans/" description="Quick plan and pricing reference." />
+</CardGrid>
