@@ -1,0 +1,67 @@
+---
+title: Glossary
+description: Definitions for team, owner, billing admin, paused resource, addon, credit, assertion, incident, and other terms used across Crystade docs.
+sidebar:
+  label: Glossary
+  order: 90
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+Use these terms consistently. Prefer **team** over workspace or project for the organizational unit.
+
+## team
+
+The organizational unit that owns resources, members, and billing. Resources cannot move between teams. A team cannot be deleted.
+
+## personal team
+
+The team created for you at signup. It is exclusive to a single user. Membership cannot be changed and invitations are disabled.
+
+## collaborative team
+
+Any team that is not a personal team. Owners can invite members by email.
+
+## owner
+
+A member with administrative privileges: team settings, invitations, role changes, status pages, and (if billing admin) billing.
+
+## member
+
+A participant on a team who can work with resources according to product permissions but cannot manage team membership or status-page configuration.
+
+## billing admin
+
+The single owner on a team who is financially responsible for that team. Manages checkout, addons, the Paddle portal, credits, and transfer of the billing admin role.
+
+## resource
+
+Anything manageable under a team, such as a cron job, monitor, assertion, incident, or status page.
+
+## paused resource
+
+A resource held above current [entitlement](/concepts/capacity/). It keeps configuration and history, does not run, and still occupies a slot. Distinct from user-disabled and from abuse suspension.
+
+## addon
+
+A quantity-based recurring purchase that extends one resource type's capacity without changing the base plan. Available on Free, Starter, and Standard.
+
+## credit
+
+Team-scoped balance stored in USD cents. Credits do not expire and cannot move between teams. The billing admin can exchange them into a one-time checkout discount. Credits are not cash.
+
+## assertion
+
+A team-scoped evaluation linked to a monitor. Assertion runs are healthy or failure and, with hysteresis, open or close an incident.
+
+## incident
+
+A team-scoped disruption record, reported by monitoring or by a member. Incidents are not deletable. Status comes from the latest response. Only published incidents can appear on a status page.
+
+## Related
+
+<CardGrid>
+<LinkCard title="Teams and members" href="/guides/teams/" description="Personal teams, roles, and invitations." />
+<LinkCard title="How capacity pauses work" href="/concepts/capacity/" description="Entitlement, pause order, and slots." />
+<LinkCard title="Plan limits" href="/reference/plans/" description="Numeric limits per plan." />
+</CardGrid>

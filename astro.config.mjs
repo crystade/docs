@@ -15,17 +15,58 @@ export default defineConfig({
 			favicon: './public/favicon.ico',
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Start here',
 					items: [
 						{ slug: 'guides/getting-started' },
+						{ slug: 'tutorials/first-monitor' },
+						{ slug: 'tutorials/first-cron-job' },
+					],
+				},
+				{
+					label: 'Account',
+					items: [
 						{ slug: 'guides/teams' },
 						{ slug: 'guides/billing' },
 						{ slug: 'guides/resources' },
+						{ slug: 'guides/affiliate' },
+					],
+				},
+				{
+					label: 'Cron jobs',
+					items: [
+						{ slug: 'guides/cron-jobs' },
+					],
+				},
+				{
+					label: 'Monitoring',
+					items: [
+						{ slug: 'guides/monitors' },
+						{ slug: 'guides/assertions' },
+					],
+				},
+				{
+					label: 'Incidents and status',
+					items: [
+						{ slug: 'guides/incidents' },
+						{ slug: 'guides/status-pages' },
+						{ slug: 'guides/alerts' },
+					],
+				},
+				{
+					label: 'Concepts',
+					items: [
+						{ slug: 'concepts/monitoring-incidents-status' },
+						{ slug: 'concepts/capacity' },
 					],
 				},
 				{
 					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
+					items: [
+						{ slug: 'reference/plans' },
+						{ slug: 'reference/cron-jobs' },
+						{ slug: 'reference/monitor-protocols' },
+						{ slug: 'reference/glossary' },
+					],
 				},
 			],
 		}),

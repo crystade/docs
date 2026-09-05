@@ -1,13 +1,13 @@
 ---
-title: Teams & Members
-description: Learn how Crystade organizes workspaces, members, roles, and invitations.
+title: Teams and members
+description: Understand personal and collaborative teams, owner and member roles, 24-hour email invitations, and the billing admin on each team.
 ---
 
 import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## Teams
+A team owns resources such as cron jobs, monitors, incidents, and status pages. Resources stay inside the team where they were created and cannot move to another team.
 
-A team is a workspace that owns resources such as cron jobs, health checks, and monitors. Resources stay inside the team where they were created.
+## Personal and collaborative teams
 
 Crystade supports two team types:
 
@@ -16,38 +16,62 @@ Crystade supports two team types:
 | **Personal team** | Solo work, private experiments, and resources that only you manage. |
 | **Collaborative team** | Shared production resources and work that multiple teammates manage together. |
 
-<Aside>
-Every account starts with a personal team. Create a collaborative team when you need shared access or team billing.
-</Aside>
+Every account starts with a personal team. Membership on a personal team cannot be changed, and invitations are disabled. Create a collaborative team when you need shared access or team billing.
+
+![Sidebar team switcher with a personal team, a collaborative team, and Create a new team](../../../assets/docs/teams/team-switcher.webp)
+
+![Create a new team form with a display name field](../../../assets/docs/teams/create.webp)
+
+A team cannot be deleted. You can create at most 5 teams. You can join at most 30 teams that you did not create. There is no limit on how many members a collaborative team can have.
 
 ## Roles
 
-Collaborative teams have two main roles:
+Collaborative teams have two roles:
 
 | Role | What they can do |
 |------|------------------|
 | **Owner** | Manage team settings, invite members, update roles, and remove members. |
 | **Member** | View team membership and work with team resources according to product permissions. |
 
-Owners should be limited to trusted teammates who are responsible for managing access and team settings.
+The person who created the team is the creator. The creator cannot be changed. You cannot leave a team if you are its creator. Owners can promote or demote anyone except themselves and the creator.
+
+Owner seats depend on the team plan: Free allows 1 owner, Starter allows 2, and Standard allows unlimited owners. Member seats are unlimited on every plan.
+
+### Access control
+
+| Action | Member | Owner |
+|--------|:------:|:-----:|
+| List members | Yes | Yes |
+| Invite a user | | Yes |
+| Promote a member to owner | | Yes |
+| Demote an owner to member | | Yes |
+| Remove a member | | Yes |
+| Leave the team (self) | Yes | Yes |
+| Update team name and settings | | Yes |
+
+The billing admin cannot leave, be removed, or be demoted until they transfer billing admin to another owner. See [Billing and plans](/guides/billing/).
 
 ## Invitations
 
-Owners can invite teammates by email. Invited users can accept or decline the invitation before it expires.
+Owners invite teammates by email. The invited user can accept or reject a non-expired invite. Any owner can revoke a non-expired invite. Invites expire after 24 hours.
+
+There is no limit on how many invites an owner can send, or on how many invites a user can receive. Member invitation is disabled on personal teams. On a collaborative team, open **Membership** and use **Invite Member**. Pending invites appear on the **Invites** tab.
+
+![Membership page with Team Members, Invite Member, and a Billing Admin badge on the owner](../../../assets/docs/teams/membership.webp)
 
 Use invitations when you want to:
 
 - Add engineers to manage jobs and monitors
-- Bring an operations teammate into the workspace
+- Bring an operations teammate into the team
 - Give a billing or team lead visibility into team activity
 
-## Billing Admin
+## Billing admin
 
-Each team has one billing admin. This person manages subscriptions, payment details, invoices, and billing changes for the team.
+Each team has exactly one billing admin. This person manages subscriptions, payment details, invoices, and billing changes for the team.
 
-The billing admin must be an owner. If billing responsibility changes, transfer the billing admin role to another owner before changing that user's access.
+The billing admin must be an owner. The team creator is the initial billing admin. If billing responsibility changes, transfer the billing admin role to another owner before changing that user's access.
 
-## Good Practices
+## Good practices
 
 <CardGrid>
 <Card title="Use teams by environment" icon="setting">
@@ -57,10 +81,32 @@ The billing admin must be an owner. If billing responsibility changes, transfer 
 	Grant owner access only to teammates who need to manage team settings or members.
 </Card>
 <Card title="Review access regularly" icon="magnifier">
-	Remove users who no longer need access to shared cron jobs, checks, or monitors.
+	Remove users who no longer need access to shared cron jobs or monitors.
 </Card>
 </CardGrid>
 
+## FAQ
+
+### Can I delete a team?
+
+No. Teams are not removable. Delete unused resources instead, or leave a collaborative team if you are not the creator.
+
+### Can I invite people to my personal team?
+
+No. Member invitation is disabled on personal teams. **Membership** on a personal team shows only the **Members** tab.
+
+![Personal team Membership page with a Members tab and no Invite Member action](../../../assets/docs/teams/membership-personal.webp)
+
+Create a collaborative team when you need shared access.
+
+### Can the team creator leave?
+
+No. Anyone except the creator can leave a collaborative team. The creator also cannot be promoted, demoted, or replaced.
+
 ## Related
 
-<LinkCard title="Billing & Plans" href="/guides/billing/" description="Learn how team billing and plan management work." />
+<CardGrid>
+<LinkCard title="Billing and plans" href="/guides/billing/" description="Learn how team billing and plan management work." />
+<LinkCard title="Resources" href="/guides/resources/" description="Understand how resources stay scoped to a team." />
+<LinkCard title="Glossary" href="/reference/glossary/" description="Definitions for team, owner, member, and billing admin." />
+</CardGrid>

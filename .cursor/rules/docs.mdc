@@ -1,0 +1,234 @@
+---
+description: Standards for authoring, structuring, and reviewing documentation (Markdown/MDX) in this Astro Starlight site — audience, structure, style, SEO, and GEO rules.
+alwaysApply: true
+---
+
+# Documentation standards — Astro Starlight
+
+## 1. Purpose & audience
+
+This repository is a documentation site built with **Astro Starlight**. Content is authored in Markdown (`.md`) and MDX (`.mdx`) under `src/content/docs/`.
+
+Two audiences read this site, often on the same page:
+
+- **Website owners / non-technical operators** — comfortable with a browser and a dashboard, not a terminal. They need plain-language, task-oriented instructions with no assumed background.
+- **Practitioners — SWE, SRE, DevOps, platform engineers** — comfortable with CLIs, APIs, config files, and systems concepts. They need precise, complete technical detail: exact commands, flags, config schemas, error conditions, edge cases.
+
+When a page must serve both audiences, separate them rather than write for the average of the two (see §8, Tabs/Asides). Never make a technical reader wade through hand-holding, and never make a non-technical reader parse jargon to find the button they need.
+
+## 2. Content model: Diátaxis
+
+Classify every page as one of four types and stay inside it. Do not mix types in a single page.
+
+| Type | Answers | Folder convention |
+|---|---|---|
+| **Tutorial** | "Teach me, step by step" | `src/content/docs/tutorials/` |
+| **How-to guide** | "Show me how to do this one task" | `src/content/docs/guides/` |
+| **Reference** | "Tell me the exact facts" (API, CLI, config) | `src/content/docs/reference/` |
+| **Explanation** | "Help me understand why/how it works" | `src/content/docs/concepts/` |
+
+If a task needs both steps and background, put the steps in a how-to and link out to an explanation page — don't inline a concepts essay into a procedure.
+
+## 3. Repository & file conventions
+
+- One topic per file. If a page needs more than ~2 unrelated H2 sections, split it.
+- File and folder names: `kebab-case`, no spaces, no uppercase, English even when the page will be translated (translations live in locale subfolders under the same slug).
+- Co-locate page-specific images next to the page or under `src/assets/docs/<section>/` and import them so Astro can optimize them; use `public/` only when the asset must be referenced by a stable absolute URL.
+- Every new top-level section must be reachable from the sidebar — register it in `astro.config.mjs` or via `sidebar: { order }` frontmatter with autogenerate. Don't leave orphaned pages.
+- Never hand-edit build output (`dist/`).
+
+## 4. Frontmatter standard
+
+Every page requires, at minimum:
+
+```yaml
+---
+title: Configure single sign-on
+description: Enable SSO for your organization using SAML or OIDC, including IdP setup and role mapping.
+---
+```
+
+Rules:
+- `title` — unique site-wide, ≤ 60 characters, sentence case, no trailing punctuation, no site-name suffix (Starlight appends it automatically).
+- `description` — unique, 120–160 characters, a genuine summary a human or search/AI engine can act on, not a restatement of the title. This becomes the `<meta description>` and the snippet shown in search and AI results.
+- `sidebar: { label, order, badge }` — set when the sidebar label should differ from `title` (shorter) or the page needs manual ordering or a "New"/"Beta" badge.
+- `tableOfContents: false` — only for very short landing/index pages where a TOC adds no value.
+- `lastUpdated` — sourced from the site-wide git-based config; never hardcode a date in frontmatter.
+- `template: splash` — homepage/section landing pages only, never content pages.
+
+## 5. Headings & structure
+
+- Exactly one H1 per page, supplied by `title` — never add a `# Heading` in the body.
+- Headings descend sequentially: H2 → H3 → H4, never skipping a level.
+- Every heading is unique within the page and descriptive enough to stand alone in a table of contents or search snippet (avoid "Overview", "Details", "More info").
+- Prefer task- or question-phrased H2s on how-to and reference pages ("Rotate an API key", "What is a service account?") — this matches how users and AI assistants actually phrase queries.
+
+## 6. Writing style
+
+- Voice: second person ("you"), active voice, present tense. "Click Save," not "The Save button should be clicked."
+- Sentence case for headings, buttons, and UI labels ("Configure billing alerts"), not Title Case.
+- One idea per sentence, one topic per paragraph; prefer 3–4 sentence paragraphs over walls of text.
+- Define every acronym and product-specific term on first use per page. Maintain a shared glossary page and link to it instead of re-explaining inline each time.
+- Use exactly one term per concept site-wide — don't alternate between "workspace" and "project" for the same thing. Keep a terminology list and enforce it in review.
+- Format numbers, units, and dates consistently (`10 MB`, not `10mb`/`10 Megabytes`; ISO 8601 `2026-09-05` in reference material).
+- Avoid unverifiable superlatives and filler ("simply", "just", "obviously", "seamlessly") — if a step is genuinely simple, its brevity shows that; if it isn't, the word is misleading.
+- For mixed-audience content, state the plain-language outcome first, then the technical mechanism — not the reverse.
+
+## 7. Page templates
+
+**Tutorial**
+```
+---
+title:
+description:
+---
+<what you'll build/learn, prerequisites, estimated time>
+## Prerequisites
+## Step 1: ...
+## Step 2: ...
+## Next steps
+```
+
+**How-to guide**
+```
+---
+title:
+description:
+---
+<one-sentence direct answer to what this guide accomplishes>
+## Before you begin
+## Steps
+## Verify it worked
+## Troubleshooting   (optional, or link to a shared troubleshooting page)
+```
+
+**Reference**
+```
+---
+title:
+description:
+---
+<one-sentence definition>
+## Syntax / Signature
+## Parameters   (table)
+## Returns / Response
+## Examples
+## Errors
+```
+
+**Explanation / concept**
+```
+---
+title:
+description:
+---
+<one-paragraph definition — the TL;DR>
+## Why it works this way
+## How it relates to <other concept>
+## Trade-offs / when not to use it
+```
+
+Every template opens with a direct one- or two-sentence answer before any preamble (see §13, GEO).
+
+## 8. Starlight components
+
+Use built-in components instead of raw HTML or ad-hoc formatting:
+
+- **Asides** (`:::note`, `:::tip`, `:::caution`, `:::danger`) — `note` for supplementary info, `tip` for optional optimizations, `caution` for "this can break something," `danger` for destructive/irreversible actions (data loss, production impact). Don't stack more than one per screen — it dilutes the signal.
+- **`<Steps>`** — any numbered procedure with more than 2 steps, so Starlight renders connected, accessible step numbers instead of a plain list.
+- **`<Tabs>` / `<TabItem>`** — parallel paths: dashboard vs. CLI vs. API, OS-specific commands, or explicitly "For website owners" vs. "For developers" when one page serves both audiences.
+- **`<Card>` / `<CardGrid>`** — landing and index pages linking to sub-sections; not for body content.
+- **`<FileTree>`** — any time a directory/file layout is shown; never fake it with a code block.
+- **`<LinkCard>`** — "next steps" / related-reading callouts at the end of a page.
+- **`<Badge>`** — version, status ("Beta", "Deprecated"), or plan-tier ("Enterprise") tags next to a heading or sidebar entry.
+
+## 9. Code samples
+
+- Every fenced code block has a language identifier — never a bare ` ``` `.
+- Add a filename title where it clarifies context, e.g. ` ```yaml title="astro.config.mjs" `.
+- Code must be real and runnable, not pseudo-code, unless explicitly labeled "Pseudocode" or "Example (not runnable)".
+- Placeholders use one consistent convention site-wide (`<PLACEHOLDER>` or `YOUR_VALUE`), documented once in the style guide — never invented per page.
+- Never include real secrets, tokens, internal hostnames, or customer data — use `example.com`, `sk-EXAMPLE...`, `123456789`.
+- Show expected output for any command whose result isn't obvious.
+- Use `diff` fences or line-highlight ranges to draw attention to what changed, instead of repeating a whole unchanged file.
+
+## 10. Links
+
+- Use relative links between docs pages (`../guides/foo`), never the production absolute URL — this keeps links valid across preview deploys, locales, and local dev.
+- Link text is descriptive ("see the SSO configuration reference"), never "click here" or a bare URL.
+- Don't hand-write anchors that duplicate Starlight's auto-generated heading slugs; if a heading is renamed, check what breaks.
+- Treat build warnings about broken links as merge blockers, not noise.
+- If a page moves or is renamed, add a `redirects` entry in `astro.config.mjs` rather than leaving a dead link or a silent 404.
+
+## 11. Images & media
+
+- Every image has meaningful `alt` text describing its content or purpose, not "image" or the filename. Purely decorative images use `alt=""`.
+- Keep screenshots current with the actual UI; annotate the relevant element (arrow/box) rather than relying on a caption like "see the button top right," and re-export whenever the UI changes.
+- Never put load-bearing information only inside an image — any fact a reader needs must also exist as real text (this matters for accessibility, search indexing, and AI-readability alike).
+- Compress and use modern formats (WebP/AVIF); avoid multi-megabyte screenshots.
+
+## 12. SEO
+
+- One unique `title` and `description` per page (§4); no duplicate metadata across pages.
+- Work the primary keyword/phrase naturally into the title, the first paragraph, and at least one H2 — never keyword-stuff.
+- Slugs are stable, descriptive, kebab-case, derived from the folder/file path. Avoid renaming slugs post-publication; add a redirect if unavoidable (§10).
+- Ensure `site` (and `base`, if used) is set correctly in `astro.config.mjs` so canonical URLs and the generated sitemap are correct.
+- Cross-link related pages; don't rely solely on sidebar navigation for discoverability.
+- Avoid publishing two pages that answer the same query — merge or clearly differentiate them.
+
+## 13. GEO — writing for AI answer engines
+
+Docs are increasingly read by retrieval systems and AI assistants (AI Overviews, ChatGPT, Perplexity, Claude, etc.) that quote or cite fragments out of context. Optimize for that:
+
+- **Answer first.** The first 1–2 sentences after the H1 — and ideally after every H2 — directly state the answer or definition, before setup, motivation, or caveats.
+- **Self-contained sections.** Write each H2/H3 so it still makes sense if it's the *only* fragment an AI system extracts — restate the subject rather than leaning on "as mentioned above" or a pronoun whose antecedent is three paragraphs up.
+- **State facts explicitly.** Prefer "X requires Y" over "you'll probably want Y" — hedged or implied statements are less likely to be extracted or cited accurately.
+- **Use lists and tables for anything enumerable** — steps, parameters, comparisons, requirements. Structured content is what gets pulled into AI summaries verbatim.
+- **Add an explicit FAQ section** on pages that map to common real questions, phrased the way users actually ask them ("Can I use SSO on a free plan?") — this matches query phrasing and raises citation likelihood.
+- **Add a one-paragraph summary/TL;DR** near the top of any page longer than ~800 words.
+- **Keep content current, and show it.** Stale docs actively mislead AI answers; rely on `lastUpdated`, and mark deprecated content with a `caution`/`danger` Aside and a Badge instead of deleting it silently.
+- **Maintain `/llms.txt`** (and `/llms-full.txt` if feasible) at the site root — a plain-language index of the site's pages per the emerging llms.txt convention, so LLM crawlers have a structured entry point. (The `starlight-llms-txt` community plugin can generate this.)
+- **Use consistent entity names.** Refer to your own product/company the same way every time — consistency helps AI systems attribute claims correctly.
+- Starlight renders everything statically, so crawlers and LLM fetchers see full text by default — keep it that way. Don't move essential information into JS-only interactive widgets with no text fallback.
+
+## 14. Accessibility
+
+- Meaningful alt text (§11); descriptive link text (§10).
+- Tables have real header rows, never used purely for visual layout.
+- Never convey meaning by color alone (e.g., "green rows are healthy") — pair color with text or an icon plus label.
+- Treat heading hierarchy (§5) as the primary screen-reader navigation aid, not decoration.
+
+## 15. Localization (if applicable)
+
+- English is the source of truth; translations live in locale subfolders under the same slug/path.
+- Never translate code, commands, config keys, or placeholders — prose only.
+- Keep structural parity across locales (same headings, same order) so navigation stays predictable.
+
+## 16. Versioning & maintenance
+
+- Rely on Starlight's git-based `lastUpdated` — never hardcode dates.
+- Mark deprecated features with a `caution`/`danger` Aside plus a `Deprecated` Badge, and state the replacement or migration path inline, not only in a changelog.
+- Renamed or moved pages always get a `redirects` entry (§10) — never a silent 404.
+
+## 17. Pre-merge checklist
+
+- [ ] One H1 (from `title`); headings descend sequentially with no skipped levels
+- [ ] `title` ≤ 60 chars and unique; `description` 120–160 chars and unique
+- [ ] Every code block has a language tag; secrets are redacted; commands are verified to run
+- [ ] All internal links are relative and resolve; no dead links
+- [ ] All images have real `alt` text
+- [ ] Terminology matches the site glossary; no synonym drift
+- [ ] Mixed-audience content is split via Tabs/Asides, not averaged into one voice
+- [ ] Long pages (>800 words) have a TL;DR and, where relevant, an FAQ section
+- [ ] Frontmatter validates against the `content.config.ts` schema
+- [ ] Spelling/grammar pass complete
+
+## 18. Do not
+
+- Add a manual `# H1` in body content.
+- Hardcode the production domain in internal links.
+- Leave `TODO`/`WIP`/placeholder prose in a merged page.
+- Use unverifiable marketing superlatives.
+- Combine unrelated topics or audiences into a single undifferentiated page.
+- Delete a published page without a redirect.
+- Put load-bearing facts only inside an image or a client-only interactive component.

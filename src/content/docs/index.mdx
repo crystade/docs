@@ -1,14 +1,14 @@
 ---
 title: Crystade Documentation
-description: Managed cron jobs, health checks, and monitoring for developer teams.
+description: Run scheduled HTTP jobs, monitor availability, track incidents, and publish status pages for developer teams without owning scheduling infrastructure.
 template: splash
 hero:
-  tagline: Run scheduled jobs, watch critical endpoints, and monitor uptime without maintaining scheduling or monitoring infrastructure.
+  tagline: Schedule outbound HTTP jobs, watch critical endpoints, and publish status updates without maintaining scheduling or monitoring infrastructure.
   actions:
-    - text: Get Started
+    - text: Get started
       link: /guides/getting-started/
       icon: right-arrow
-    - text: View Plans
+    - text: View plans
       link: /guides/billing/
       icon: open-book
       variant: minimal
@@ -18,28 +18,28 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 ## What is Crystade?
 
-Crystade is a platform for teams that need reliable **cron jobs**, **health checks**, and **monitoring** in one place. Start with a personal workspace, then invite teammates when the project grows.
+Crystade is a platform for teams that need **cron jobs**, **monitoring**, **incidents**, and **status pages** in one place. Start with a personal team, then invite teammates when the project grows.
 
 <CardGrid>
-<Card title="Managed cron jobs" icon="rocket">
-	Schedule recurring HTTP jobs and review execution history without running your own scheduler.
-</Card>
-<Card title="Health checks" icon="heart">
-	Check whether important endpoints are responding as expected.
+<Card title="Cron jobs" icon="rocket">
+	Schedule recurring HTTP requests and review every execution without running your own scheduler.
 </Card>
 <Card title="Monitoring" icon="chart">
-	Track service availability and respond faster when something changes.
+	Probe HTTP, TCP, TLS, and Minecraft endpoints from multiple regions and evaluate the results with assertions.
 </Card>
-<Card title="Team workspaces" icon="people">
+<Card title="Incidents and status pages" icon="warning">
+	Track disruptions, publish updates, and give users a public page to check before they contact support.
+</Card>
+<Card title="Teams" icon="people">
 	Keep resources, access, and billing organized by team.
 </Card>
 </CardGrid>
 
-## Start Here
+## Start here
 
 <CardGrid>
-<LinkCard title="Getting Started" href="/guides/getting-started/" description="Create your account, choose a workspace, and invite teammates." />
-<LinkCard title="Teams & Members" href="/guides/teams/" description="Understand personal teams, collaborative teams, owners, and members." />
-<LinkCard title="Billing & Plans" href="/guides/billing/" description="Compare plans, manage subscriptions, and understand addons." />
-<LinkCard title="Resources" href="/guides/resources/" description="Learn how team-scoped resources and plan capacity work." />
+<LinkCard title="Getting started" href="/guides/getting-started/" description="Create your account, finish onboarding, and invite teammates." />
+<LinkCard title="Create your first monitor" href="/tutorials/first-monitor/" description="Probe an HTTP endpoint and see a check result on your personal team." />
+<LinkCard title="Create your first cron job" href="/tutorials/first-cron-job/" description="Schedule an HTTP request and read the first execution log." />
+<LinkCard title="Teams and members" href="/guides/teams/" description="Understand personal teams, collaborative teams, owners, and members." />
 </CardGrid>

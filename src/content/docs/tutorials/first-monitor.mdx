@@ -1,0 +1,102 @@
+---
+title: Create your first monitor
+description: Create an HTTP monitor on your personal team, link one assertion, and wait for Crystade to run a check so you can see the first result.
+---
+
+import { Steps, Aside, Tabs, TabItem, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+This tutorial walks you through creating an HTTP availability monitor on your personal team, linking one assertion, and reading the first check result. Expect about 10 minutes.
+
+Onboarding uses this same path when your primary job is uptime monitoring or a status page. The first run is forced immediately so you do not wait for the Free-plan interval.
+
+## Prerequisites
+
+- A Crystade account signed in with Google or GitHub
+- A public HTTPS URL you are allowed to probe (for example `https://example.com`)
+- Your personal team selected in the team switcher
+
+## Step 1: Create an HTTP monitor
+
+<Tabs>
+<TabItem label="For website owners">
+
+<Steps>
+
+1. Open **Monitors** on your personal team and choose **Create a monitor** (or **New Monitor**).
+
+   ![Monitors empty state with New Monitor and Create a monitor](../../../assets/docs/monitors/list.webp)
+
+2. Name the monitor after the site or service, for example `Marketing site`.
+
+   ![New Monitor wizard on the Overview step with name and description](../../../assets/docs/monitors/create.webp)
+
+3. Choose the **HTTP** protocol and paste the URL to check.
+
+4. Leave the interval at the plan default. Free teams cannot go faster than every 5 minutes. This tutorial still shows a result immediately because Crystade runs the first check without waiting for that interval.
+
+5. Save the monitor.
+
+</Steps>
+
+</TabItem>
+<TabItem label="For developers">
+
+<Steps>
+
+1. Open **Monitors** and create a monitor with protocol `HTTP`.
+
+2. Set the URL, optional headers (max 20), optional text body (max 64 KB), redirect-follow limit (max 10), and connection timeout (max 5 minutes).
+
+3. Pick probe locations from `europe-north1`, `us-west1`, `asia-southeast1`, and `australia-southeast1`. The number of locations is plan-gated.
+
+4. For TCP, TLS (Starter and Standard), or Minecraft instead of HTTP, see [Create an availability monitor](/guides/monitors/). Skip UDP; it is not available.
+
+5. Save the monitor. Definition updates take effect within 5 minutes. The onboarding first run uses the saved definition immediately.
+
+</Steps>
+
+</TabItem>
+</Tabs>
+
+Private, loopback, and link-local destinations are rejected.
+
+## Step 2: Link an assertion
+
+A monitor records probe results. An assertion decides whether those results are healthy or a failure, and can open an incident when the failure pattern holds.
+
+<Steps>
+
+1. Open the new monitor and link an assertion from your team's library. Create one if the library is empty. On create, the **New Monitor** wizard includes an **Assertions** step after **Active monitoring**.
+
+   ![New Monitor wizard showing Overview, Active monitoring, Assertions, and Review](../../../assets/docs/assertions/wizard.webp)
+
+2. Keep the default hysteresis for this tutorial: open an incident on 3 failed checks out of 5, and close it after 5 consecutive successes.
+
+3. Free teams can link 1 assertion per monitor. That is enough for this first win.
+
+</Steps>
+
+<Aside>
+The first-win wait continues until check logs are terminal and linked assertion runs are available, or until a short wait limit is reached. If the wait times out, the monitor already exists and later checks still run.
+</Aside>
+
+## Step 3: Read the first check result
+
+<Steps>
+
+1. Stay on the monitor until the forced first run completes, or open the check log from the monitor page.
+
+2. Confirm the request URL, location, timing (DNS, first byte, round trip), and whether the assertion run is healthy or failed.
+
+3. If the check failed, confirm the URL is public and responds to Crystade's regions, then save and wait for the next check.
+
+</Steps>
+
+## Next steps
+
+<CardGrid>
+<LinkCard title="Create an availability monitor" href="/guides/monitors/" description="HTTP, TCP, TLS, and Minecraft options, intervals, and regions." />
+<LinkCard title="Configure assertions" href="/guides/assertions/" description="Link assertions and tune when incidents open and close." />
+<LinkCard title="Send Slack or Discord alerts" href="/guides/alerts/" description="Notify a channel when monitors fail or recover." />
+<LinkCard title="Publish a status page" href="/guides/status-pages/" description="Show monitor uptime and published incidents to users." />
+</CardGrid>

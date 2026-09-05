@@ -1,0 +1,86 @@
+---
+title: Send Slack or Discord alerts
+description: Create a team webhook channel for Slack or Discord, choose which job, monitor, incident, and status-page events to deliver, and disable it without deleting it.
+---
+
+import { Steps, Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+Alert webhooks push notifications to Slack or Discord when team events occur. A webhook channel is a team-scoped resource. Any owner can create, update, or delete it. Members cannot. You can disable a channel without deleting it.
+
+Webhook channels are free to define. The number of non-deleted channels is plan-gated: Free 1, Starter 5, Standard 10. See [plan limits](/reference/plans/).
+
+## Before you begin
+
+- You must be an owner of the team.
+- Create an incoming webhook in Slack or Discord and copy the URL.
+- Discord URLs must start with `https://discord.com/api/webhooks/`. Slack URLs must start with `https://hooks.slack.com/services/`.
+
+## Create a webhook channel
+
+Open **Alerting** in the sidebar. Webhook deliveries live under **Webhook Delivery**.
+
+![Alerting page with Webhook Delivery empty state and Create Webhook](../../../assets/docs/alerts/list.webp)
+
+<Steps>
+
+1. Open **Alerting** for the team.
+
+2. Choose **Create Webhook**, name the channel, and pick **Discord** or **Slack**.
+
+   ![New Webhook form with name, URL, platform, and job and monitor event checkboxes](../../../assets/docs/alerts/create.webp)
+
+3. Paste the webhook URL. Private, loopback, and link-local URLs are rejected.
+
+4. Select the events this channel should receive. An empty selection is allowed; the channel then delivers nothing until you add events.
+
+5. Save. The channel is enabled unless you disable it later.
+
+</Steps>
+
+## Events you can subscribe to
+
+| Event | When it fires |
+|-------|----------------|
+| Cron job created, updated, or removed | An owner or member changes a cron job definition |
+| `job.execution.succeeded` | A cron execution completed successfully and the previous run was not a failure |
+| `job.execution.failed` | A cron execution failed |
+| `job.execution.recovered` | A cron execution succeeded after the previous run failed |
+| Monitor created, updated, or removed | A monitor definition changes |
+| `monitor.check.succeeded` | A monitor check succeeded and the previous check was not a failure |
+| `monitor.check.failed` | A monitor check failed |
+| `monitor.check.recovered` | A monitor check succeeded after a previous failure |
+| Incident created or updated | A new incident is reported or an existing incident changes |
+| Status page created, updated, or removed | Status page configuration changes |
+| Status page subscriber added or removed | Someone subscribes or unsubscribes |
+
+Cron execution alerts include job identity, execution status, HTTP status when present, error details, start and end time, and attempt count. Monitor check alerts include monitor identity, location, success flag, and scheduled time.
+
+<Aside>
+Delivery is best-effort. A disabled channel does not receive events. Attaching webhooks to some resources may be billed with that resource; channel definitions themselves are not billed.
+</Aside>
+
+## Disable or delete a channel
+
+Owners can disable a channel so it stays configured but stops delivering. Owners can also delete a channel, which counts against the non-deleted channel limit.
+
+## Verify it worked
+
+- Send a test by triggering a subscribed event, for example a manual cron run that fails or succeeds.
+- Confirm the Slack or Discord channel posts a message for that event.
+- Disable the webhook and trigger again; no new message should appear.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---------|----------------|
+| Cannot create a channel | Only owners can create webhook channels. Check the plan channel limit. |
+| URL rejected | Use the official Slack or Discord webhook prefix. Private destinations are blocked. |
+| No messages | Confirm the channel is enabled and subscribed to the event that fired. |
+
+## Related
+
+<CardGrid>
+<LinkCard title="Create and run a cron job" href="/guides/cron-jobs/" description="Executions that can succeed, fail, or recover." />
+<LinkCard title="Create an availability monitor" href="/guides/monitors/" description="Checks that can fail or recover." />
+<LinkCard title="Report and update incidents" href="/guides/incidents/" description="Incident events you can send to Slack or Discord." />
+</CardGrid>

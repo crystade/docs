@@ -1,0 +1,44 @@
+---
+title: How monitoring relates to incidents and status pages
+description: A monitor check feeds assertion runs, which can open an incident. Owners publish that incident to a status page so subscribers and RSS readers see it.
+sidebar:
+  label: Monitoring and incidents
+---
+
+import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+A monitor check produces a check log. Linked assertions evaluate that log. When an assertion run flips from healthy to failure (after hysteresis), Crystade reports an incident. If an owner publishes the incident on a status page, subscribers and RSS/Atom readers are notified.
+
+## Why it works this way
+
+Monitoring answers “is the probe succeeding?” Incidents answer “are we tracking a disruption?” Status pages answer “what should customers see?” Keeping those as separate objects lets you probe aggressively without paging the public on a single blip, and lets you report incidents that no probe can see (data corruption, third-party degradation, UX issues).
+
+Hysteresis exists so a single failed check does not open an incident. The default requires 3 failures in a window of 5 checks to open, and 5 consecutive successes to close. Closing is intentionally harder than opening.
+
+## How it relates to alerts
+
+Slack and Discord webhooks can subscribe to monitor checks, incident reports, and status-page changes independently. An alert is a push to your team. A status page is a page for people outside the team. You can use one, both, or neither.
+
+## Trade-offs
+
+- A status page shows only **published** incidents. An unpublished incident stays inside the team.
+- Monitor-reported incidents include system-generated context (monitor name, failure reason, check locations). Manual incidents start from a teammate's first response.
+- Private status pages hide the page from the public entirely; they do not change how incidents are stored.
+- Check Script (Starter and Standard) can send extra alerts or signal incidents from custom logic. Assertions plus hysteresis remain the structured path for opening and closing incidents.
+
+<Aside>
+Do not put load-bearing process only on Slack. If you need a timeline, report an incident. If customers need a URL, publish a status page.
+</Aside>
+
+## When not to use this loop
+
+Skip a status page if the service has no external stakeholders. Skip automatic incidents if you only want a log of checks—leave assertions unlinked, or do not publish. Use a [manual incident](/guides/incidents/) when monitoring cannot detect the failure.
+
+## Related
+
+<CardGrid>
+<LinkCard title="Create an availability monitor" href="/guides/monitors/" description="Run probes from Crystade regions." />
+<LinkCard title="Configure assertions" href="/guides/assertions/" description="Tune when incidents open and close." />
+<LinkCard title="Report and update incidents" href="/guides/incidents/" description="Track disruptions and publish them." />
+<LinkCard title="Publish a status page" href="/guides/status-pages/" description="Give users a URL to check before they contact support." />
+</CardGrid>

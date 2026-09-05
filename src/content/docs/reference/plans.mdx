@@ -1,17 +1,24 @@
 ---
-title: Plan Reference
-description: Quick reference for Crystade plans, seats, addons, and billing basics.
+title: Plan limits
+description: Limits for Free, Starter, and Standard covering seats, cron jobs, monitors, assertions, webhooks, status pages, and addon pack prices.
+sidebar:
+  label: Plan limits
+  order: 1
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 
-## Base Plans
+Every team is always on exactly one plan: Free, Starter, or Standard. Addons extend a single resource type without changing the base plan. Billing rules live in [Billing and plans](/guides/billing/).
+
+## Base plans
 
 | Plan | Price | Best for |
 |------|-------|----------|
 | **Free** | $0 | Solo developers, side projects, and prototypes |
 | **Starter** | $15/month | Small teams launching production workloads |
 | **Standard** | $49/month | Growing teams that need more ownership flexibility |
+
+Currency is USD. Payments, taxes, invoices, and payment method updates are handled by Paddle. Paid plans and addons include a 30-day money-back guarantee from the initial purchase date.
 
 ## Seats
 
@@ -20,22 +27,84 @@ import { Aside } from '@astrojs/starlight/components';
 | Team members | Unlimited | Unlimited | Unlimited |
 | Owners | 1 | 2 | Unlimited |
 
-<Aside>
-Resource limits are documented with each resource type. Addons can increase capacity for supported resources.
-</Aside>
+## Cron jobs
 
-## Addons
+| Feature | Free | Starter | Standard |
+|---------|------|---------|----------|
+| Non-deleted jobs | 5 | 50 | 200 |
+| Manual triggers per team | 50/week | Unlimited | Unlimited |
+| Minimum interval | 5m | 1m | 1m |
+| Max response body capture | 0 | 4 KB | 16 KB |
+| HTTP/1.1 and HTTP/2.0 | Yes | Yes | Yes |
+| Execution log visibility | 30 days | 90 days | 365 days |
+| Retry | No | Yes | Yes |
+| Tracing metadata | No | No | Yes |
+
+**Addon:** 10 additional active jobs for $1.99/month. Available on all plans.
+
+## Monitors
+
+| Feature | Free | Starter | Standard |
+|---------|------|---------|----------|
+| Non-deleted monitors | 5 | 20 | 100 |
+| Assertions linked per monitor | 1 | 3 | 5 |
+| Assertions per team | 10 | 20 | 50 |
+| Minimum active interval | 5m | 1m | 30s |
+| Max HTTP response body capture | 0 | 4 KB | 16 KB |
+| Probe locations | 3 | 8 | 16 |
+| HTTP/1.1, HTTP/2.0, TCP, Minecraft | Yes | Yes | Yes |
+| TLS certificate checks | No | Yes | Yes |
+| Check Script | No | Yes | Yes |
+| Check log visibility | 30 days | 90 days | 365 days |
+
+**Addon:** 10 additional monitors for $2.99/month. Available on all plans.
+
+## Alert webhooks
+
+| Feature | Free | Starter | Standard |
+|---------|:----:|:-------:|:--------:|
+| Non-deleted webhook channels | 1 | 5 | 10 |
+
+Webhook channels are free to define. Platforms are Discord and Slack.
+
+## Status pages
+
+| Feature | Free | Starter | Standard |
+|---------|------|---------|----------|
+| Non-deleted status pages per team | 1 | 2 | 5 |
+| Monitors per page | 5 | 10 | 30 |
+| Subscribers per page | 50 | 1000 | 5000 |
+| Private status pages | No | Yes | Yes |
+| Custom favicon and banner | Yes | Yes | Yes |
+| RSS/Atom feed | Yes | Yes | Yes |
+| SSL/TLS | Yes | Yes | Yes |
+| Google Analytics | No | No | Yes |
+
+**Addons:**
+
+| Addon | Unit | Price | Availability |
+|-------|------|-------|--------------|
+| Additional status page | 1 page | $6.99/month | All plans |
+| Additional subscribers | 100 subscriber slots | $1.99/month | Starter and Standard |
+
+## Incidents
+
+| Feature | Free | Starter | Standard |
+|---------|------|---------|----------|
+| Monitor-reported incidents | Yes | Yes | Yes |
+| Manual incident reports | Yes | Yes | Yes |
+| Publish and unpublish | Yes | Yes | Yes |
+| Response length | 2000 characters | 10000 characters | 10000 characters |
+
+## Addon rules
 
 | Detail | Value |
 |--------|-------|
-| Availability | All plans |
+| Availability | All plans, unless noted |
 | Billing cycle | Monthly |
-| Scope | Team-specific |
+| Scope | The purchasing team |
 | Managed by | Billing admin |
 
-## Billing Basics
-
-- Currency is USD.
-- Payments, taxes, invoices, and payment method updates are handled by Paddle.
-- Paid plans and addons include a 30-day money-back guarantee from the initial purchase date.
-- Plan downgrades, addon decreases, and cancellations take effect at the next billing date.
+<Aside>
+Paused resources still occupy slots. Delete a resource to free capacity for a new create. See [How capacity pauses work](/concepts/capacity/).
+</Aside>

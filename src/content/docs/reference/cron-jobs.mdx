@@ -1,0 +1,79 @@
+---
+title: Cron job fields and limits
+description: Unix cron expression rules, HTTP field caps, retry window, queue wait, response capture, log retention, and Standard tracing metadata for cron jobs.
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+A cron job is a scheduled outbound HTTP request. How to create and trigger one is in [Create and run a cron job](/guides/cron-jobs/). Plan numbers are in [plan limits](/reference/plans/).
+
+## Cron expression
+
+The expression follows Unix cron with five fields: minute, hour, day of month, month, day of week. Maximum length is 255 characters.
+
+Minimum interval is 5 minutes on Free and 1 minute on Starter and Standard.
+
+## Job fields
+
+| Field | Limit |
+|-------|--------|
+| Name | 3–255 characters |
+| Description | Up to 2048 characters |
+| URL | Up to 2048 characters; `http` or `https` only |
+| HTTP method | `GET`, `POST`, `PUT`, `PATCH`, `DELETE` |
+| Request headers | Max 20 name/value pairs; name up to 255 characters; value up to 4 KB |
+| Request body | Max 256 KB; plain text, JSON, or XML |
+| Redirect-follow limit | 0–10 |
+| Connection timeout | 3 seconds–15 minutes (3000–900000 ms) |
+
+GET requests may include a body. Private, loopback, and link-local destinations are rejected.
+
+A definition update takes effect for scheduled runs within 5 minutes. A manual trigger always uses the latest definition.
+
+## Execution
+
+| Behavior | Value |
+|----------|--------|
+| Schedule lag | Within 5 seconds under normal load |
+| Queue wait | Up to 5 minutes |
+| Upstream response cap | 32 MB |
+| Retry | Starter and Standard: up to 10 attempts within 30 minutes total |
+| `Retry-After` | Not supported; it does not change retry behavior |
+| Disabled, deleted, or paused | Scheduler skips the job |
+| Manual trigger while disabled | Allowed; uses latest definition |
+| Manual trigger rate limit | Per team, not per job (50/week on Free) |
+
+HTTP/1.1 and HTTP/2.0 are supported on every plan.
+
+Each execution stores a copy of the job definition used for that run, plus response error code, HTTP status, headers, body, and timing (scheduled, started, completed).
+
+## Response capture and logs
+
+| Plan | Max response body capture | Log visibility |
+|------|---------------------------|----------------|
+| Free | 0 | 30 days |
+| Starter | 4 KB | 90 days |
+| Standard | 16 KB | 365 days |
+
+Crystade retains execution logs regardless of plan. Visibility is what the plan gates.
+
+## Retry
+
+When retry is present on Starter or Standard:
+
+| Field | Range |
+|-------|--------|
+| Initial interval | 1 ms–30 minutes |
+| Max interval | 1 ms–30 minutes; must be ≥ initial |
+| Multiplier | 1–10 |
+
+## Tracing metadata
+
+Standard jobs include tracing metadata on the outbound request: execution ID (idempotency key), cron job ID, scheduled-at, started-at, and whether the run was manual. Free and Starter do not include tracing metadata.
+
+## Related
+
+<CardGrid>
+<LinkCard title="Create and run a cron job" href="/guides/cron-jobs/" description="How to create, run, and read executions." />
+<LinkCard title="Plan limits" href="/reference/plans/" description="Job count, interval, retry, and tracing by plan." />
+</CardGrid>

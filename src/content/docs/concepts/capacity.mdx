@@ -1,0 +1,48 @@
+---
+title: How capacity pauses work
+description: Plan base plus addons set entitlement. Surplus resources pause newest-first, keep their slots, and do not run until older paused resources are restored.
+---
+
+import { Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+Resource entitlement for a type is **plan base plus addon units**. When usage is above that number, Crystade pauses surplus resources instead of deleting them. Paused resources do not run, keep their configuration and history, and still occupy slots.
+
+## Why it works this way
+
+Billing changes must not destroy definitions or execution history. A downgrade or addon cancellation can drop the limit below current usage. Pausing surplus resources keeps the team able to restore capacity later without recreating jobs or monitors.
+
+Paused-for-billing is distinct from a user disabling a resource and from abuse suspension. A disabled job can still be triggered manually. A billing-paused job does not execute on the schedule.
+
+## How surplus resources are chosen
+
+When entitlement falls below usage, Crystade pauses surplus resources in deterministic order: **newest created first**, ties broken by ID descending.
+
+When capacity becomes available again, paused resources unsuspend automatically in reverse order: **oldest created first**, ties broken by ID ascending, until the cap is reached. Any remainder stays paused.
+
+## Paused resources still occupy slots
+
+A paused resource counts toward the entitlement counter. You cannot create a new resource of that type while total countable resources are at or above capacity. Disabling a resource does not free a slot. **Only delete frees a slot for a new create.**
+
+<Aside type="caution">
+Delete is permanent. If you delete a paused resource to make room, you cannot restore that definition later.
+</Aside>
+
+## How it relates to plans and addons
+
+- Upgrades and addon increases take effect after payment and can unsuspend paused resources automatically.
+- Downgrades and addon decreases take effect at the next billing date, then pause surplus if needed.
+- Past-due payment recovery keeps current paid entitlements until the paid term ends.
+
+See [Billing and plans](/guides/billing/) for when changes take effect, and the [plan limits reference](/reference/plans/) for base numbers and addon packs.
+
+## When not to rely on pause
+
+Pause is for temporary over-capacity, not for environment isolation. If production and staging need separate billing or access, use separate teams instead of pausing a subset of jobs.
+
+## Related
+
+<CardGrid>
+<LinkCard title="Resources" href="/guides/resources/" description="How resources stay scoped to a team." />
+<LinkCard title="Billing and plans" href="/guides/billing/" description="When plan and addon changes take effect." />
+<LinkCard title="Plan limits" href="/reference/plans/" description="Base limits and addon packs per resource type." />
+</CardGrid>

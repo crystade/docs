@@ -1,13 +1,13 @@
 ---
-title: Billing & Plans
-description: Compare Crystade plans, understand addons, and manage team billing.
+title: Billing and plans
+description: Compare Free, Starter, and Standard plans, buy addons, transfer billing admin, recover past-due payments, and use team credits at checkout.
 ---
 
-import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 Crystade billing is scoped to a team. Each team has its own plan, addons, invoices, and billing admin.
 
-Payments, invoices, taxes, and payment method updates are handled securely by Paddle.
+Payments, invoices, taxes, and payment method updates are handled by Paddle. Currency is USD.
 
 ## Plans
 
@@ -17,11 +17,11 @@ Payments, invoices, taxes, and payment method updates are handled securely by Pa
 | **Starter** | $15/month | Small teams launching production workloads |
 | **Standard** | $49/month | Growing teams with more resources and owners |
 
-<Aside>
-Resource limits vary by resource type. For example, cron job limits are documented with cron jobs rather than in this billing overview.
-</Aside>
+A newly created team starts on Free. Resource-specific limits live in the [plan limits reference](/reference/plans/). Open **Billing** in the sidebar to see the current plan, addons, and payment actions.
 
-## Seats and Owners
+![Billing page with current plan, addons, and Manage billing](../../../assets/docs/billing/plans.webp)
+
+## Seats and owners
 
 | Feature | Free | Starter | Standard |
 |---------|:----:|:-------:|:--------:|
@@ -30,14 +30,16 @@ Resource limits vary by resource type. For example, cron job limits are document
 
 ## Addons
 
-Addons let you increase capacity for a specific resource without changing your base plan. For example, a team may add more cron job capacity while staying on the same plan.
+Addons let you increase capacity for a specific resource without changing your base plan. For example, a team may add more cron job capacity while staying on Free.
 
 - Available on all plans, including Free
 - Billed monthly
 - Managed by the team's billing admin
 - Scoped to the team that purchased them
 
-## Plan and Addon Changes
+Addon packs and prices are listed in the [plan limits reference](/reference/plans/).
+
+## Plan and addon changes
 
 | Change | When it takes effect |
 |--------|----------------------|
@@ -47,11 +49,42 @@ Addons let you increase capacity for a specific resource without changing your b
 | Decrease addon quantity | At the next billing date |
 | Cancel paid subscription | At the end of the current paid period |
 
+Upgrades and addon increases are billed immediately (prorated for the rest of the current period) and take effect only after Paddle confirms payment. Downgrades and addon decreases incur no proration.
+
+During a pending downgrade, you can switch to any plan that does not exceed the original plan without being prorated. Switching above the original plan is an upgrade and is billed immediately. The same rule applies to pending addon decreases.
+
 <Aside type="tip">
-Crystade does not delete resources or execution history when billing changes. If a lower plan or addon quantity reduces capacity, some resources may pause until capacity is available again.
+Crystade does not delete resources or execution history when billing changes. If a lower plan or addon quantity reduces capacity, surplus resources are [paused](/concepts/capacity/) until capacity is available again.
 </Aside>
 
-## Invoices and Payment Methods
+If a scheduled change leaves the team with no remaining paid items, the paid subscription ends and the team continues on Free.
+
+## Billing admin
+
+Every team has exactly one billing admin, who must be an owner. The team creator is the initial billing admin.
+
+Only the current billing admin can:
+
+- Start paid checkout
+- Change the base plan or addon quantity
+- Open the Paddle billing portal
+- Stop renewal
+- Transfer billing admin to another owner
+- Exchange credits into a checkout discount
+
+Members and other owners can view the current plan, limits, and billing warnings.
+
+When you transfer billing admin, Crystade cancels the team's active subscriptions starting from the next billing period. The new billing admin must resubscribe if the team should keep paid entitlements. The current billing admin cannot leave, be removed, or be demoted until they transfer the role.
+
+If the current billing admin is uncontactable, owners must reach Crystade support for a manual transfer.
+
+## Past-due payments
+
+If Paddle marks a subscription as past due, the team keeps its current paid entitlements during payment recovery. The billing admin sees a billing warning and links to recover payment.
+
+While a subscription is past due, new paid upgrades and addon increases are blocked until the account returns to good standing. If Paddle recovers payment, the subscription returns to active without losing entitlements. If recovery fails and the paid term ends, the team falls back to the entitlements of any remaining paid items.
+
+## Invoices and payment methods
 
 The billing admin can open the Paddle customer portal to:
 
@@ -60,17 +93,40 @@ The billing admin can open the Paddle customer portal to:
 - Manage billing details
 - Stop future renewal
 
-## Money-Back Guarantee
+Taxes are handled by Paddle. Billing documents are scoped to the team through the billing admin's Paddle customer.
 
-Paid plans and addons include a 30-day money-back guarantee from the initial purchase date. Contact Crystade support to request a refund within the guarantee window.
+## Money-back guarantee
 
-## Credits and Discounts
+Paid plans and addons include a 30-day money-back guarantee from the date of the **initial purchase**. The guarantee applies to the first purchase of a plan or addon only, not to renewals.
 
-If your team has credits, the billing admin can use them toward eligible checkout discounts. Credits belong to the team and cannot be moved to another team.
+Contact Crystade support to request a refund within the guarantee window. Refunds outside that window are not self-serve.
+
+## Credits and discounts
+
+Credits belong to the team, do not expire, and cannot move to another team. Newly created teams start with no credits.
+
+The billing admin can exchange credits into a one-time checkout discount at a rate of 1 credit = 1 USD. That discount expires 30 days after the exchange and cannot be converted back into credits. Credits are not cash.
+
+When a checkout opens, Crystade pre-selects the team's active auto-applied discount if one exists. The billing admin can replace it with a different discount code during checkout.
+
+## FAQ
+
+### Who can change the plan?
+
+Only the billing admin can start checkout, change the plan, or change addon quantity.
+
+### What happens if I transfer billing admin?
+
+Paid subscriptions for that team are cancelled from the next billing period. The new billing admin resubscribes to keep paid entitlements.
+
+### Do I keep access while payment recovery is running?
+
+Yes. The team keeps current paid entitlements while the subscription is past due. Upgrades and addon increases stay blocked until payment succeeds.
 
 ## Related
 
 <CardGrid>
-<LinkCard title="Teams & Members" href="/guides/teams/" description="Understand the billing admin role and team ownership." />
-<LinkCard title="Plan Reference" href="/reference/plans/" description="Quick plan and pricing reference." />
+<LinkCard title="Teams and members" href="/guides/teams/" description="Understand the billing admin role and team ownership." />
+<LinkCard title="How capacity pauses work" href="/concepts/capacity/" description="What happens when usage exceeds plan and addon limits." />
+<LinkCard title="Plan limits" href="/reference/plans/" description="Limits, addon packs, and prices for each plan." />
 </CardGrid>

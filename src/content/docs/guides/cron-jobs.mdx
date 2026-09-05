@@ -1,0 +1,84 @@
+---
+title: Create and run a cron job
+description: Define a scheduled HTTP job with a Unix cron expression, headers, and body, then trigger it manually or let the scheduler run it.
+---
+
+import { Steps, Aside, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+A cron job is a team-scoped scheduled HTTP request. Any member can create, update, or delete it. The scheduler runs enabled jobs that are not paused; any member can also trigger a run manually.
+
+Limits, retries, and log retention are in the [cron job reference](/reference/cron-jobs/) and [plan limits](/reference/plans/).
+
+## Before you begin
+
+- Select the team that should own the job. Jobs cannot move to another team.
+- Use a public HTTP or HTTPS URL. Private, loopback, and link-local destinations are rejected.
+- On Free, the minimum interval is 5 minutes and manual triggers are 50 per team per week.
+
+## Create a cron job
+
+Open **Cron Jobs** to list scheduled jobs. Use **New Job** or **Create a job**.
+
+![Cron Jobs empty state with New Job and Create a job](../../../assets/docs/cron-jobs/list.webp)
+
+<Steps>
+
+1. Open **Cron Jobs** and choose **Create a job** (or **New Job**).
+
+   ![New Cron Job wizard on the Overview step with name and description](../../../assets/docs/cron-jobs/create.webp)
+
+2. Set **name** and optional **description**.
+
+3. Set a Unix cron expression (five fields: minute, hour, day of month, month, day of week).
+
+4. Set **URL**, **HTTP method**, optional **headers** (max 20 entries), and optional **body** (max 256 KB; plain text, JSON, or XML).
+
+5. Set **connection timeout** (max 15 minutes) and **redirect-follow limit** (max 10).
+
+6. Save. Scheduled updates take effect within 5 minutes. A manual trigger always uses the latest definition.
+
+</Steps>
+
+Any member of the team can create, modify, or delete a cron job. Definition changes are logged with timestamp, actor, action, and cron job ID.
+
+## Run a job
+
+The scheduler skips deleted, disabled, and billing-paused jobs.
+
+You can trigger a run manually even when the job is disabled. Manual trigger always uses the latest saved definition. Manual trigger rate limits, where the plan applies them, are per team rather than per job.
+
+<Aside>
+Schedule lag is kept within 5 seconds under normal load. An execution may wait in the queue for up to 5 minutes.
+</Aside>
+
+## Read an execution
+
+Each execution stores a copy of the job definition used for that run, plus:
+
+- Response error code, HTTP status, headers, and body
+- Timing: scheduled at, started at, completed at
+- Scheduler lag
+
+Response body is stored in binary. How much body you can see depends on the plan (0 on Free). Visibility into older logs is plan-gated; Crystade retains execution logs regardless of plan.
+
+## Verify it worked
+
+- The job appears in the team's cron job list.
+- A scheduled or manual execution shows a request snapshot and a completion time.
+- Failures show an HTTP status or connection error you can match to your origin logs.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---------|----------------|
+| Job never runs | Confirm it is enabled and not [paused](/concepts/capacity/). Confirm the cron expression is due. Wait up to 5 minutes after a definition change. |
+| Manual trigger rejected | Free teams have 50 manual triggers per team per week. |
+| URL rejected | The host must not resolve to private, loopback, or link-local addresses. |
+| Empty response body | Free does not capture response bodies. Upgrade or use status code and timing only. |
+
+## Related
+
+<CardGrid>
+<LinkCard title="Create your first cron job" href="/tutorials/first-cron-job/" description="A short first-run walkthrough on your personal team." />
+<LinkCard title="Cron job reference" href="/reference/cron-jobs/" description="Field limits, retries, retention, and tracing." />
+</CardGrid>
